@@ -1,18 +1,17 @@
 [project]
 name = "FTzard"
 version = "1.0.0"
-contributors = ['Aamir Ahmad Ansari, aamirahmadansari@outlook.com']
 requires-python = ">=3.10"
 
 
 
 [tool.pixi.project]
-
+name = "FTzard"
 channels = ["conda-forge"]
 platforms = ["linux-64", "win-64"]
 
 
-[tool.pixi.dependencies]
+[tool.pixi.pypi-dependencies]
 numpy = "*"
 pandas = "*"
 matplotlib = "*"
@@ -20,8 +19,9 @@ dagster = "*"
 mlflow = "*"
 dvc = "*"
 transformers = "*"
-bitsandbytes = "*"
 accelerate = "*"
-peft = "*"
 datasets = "*"
+bitsandbytes = "*"
+peft = "*"
+torch = "*"
 ftzard = { path = ".", editable = true }
