@@ -1890,7 +1890,7 @@ packages:
   name: ftzard
   version: 1.0.0
   path: .
-  sha256: 2c0ee1fe236aa63cef2c80d4439c2ee21e01584e4ea3fe1c33108539011089cb
+  sha256: 4951167f9e2ffde40aa97971bfbf30a5a2bbc10bb4bb97e444d3041e4637b7d0
   requires_python: '>=3.8'
   editable: true
 - kind: pypi

@@ -38,6 +38,7 @@ trl = "*"
 dvc-gdrive = "*"
 jupyterlab = "*" 
 optuna = "*"
+joblib = "*"
 
 [tool.pixi.system-requirements]
 linux = "5.8"

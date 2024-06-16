@@ -23,7 +23,7 @@ def create_experiment(exp_name:str)->str:
         return experiment.experiment_id
     return client.create_experiment(name=exp_name)
 
-def get_run_id_by_name(run_name:str, experiment_ids:List[str])->str:
+def get_run_id_by_name(run_name:str, experiment_ids:List[str], nested:bool=False)->str:
     client = get_mlflow_client()
     run = mf.search_runs(experiment_ids=experiment_ids,
                        filter_string=f"run_name='{run_name}'", output_format='list')
@@ -31,7 +31,8 @@ def get_run_id_by_name(run_name:str, experiment_ids:List[str])->str:
         return run[0].info.run_id
     else:
         if experiment_ids:
-            run = mf.start_run(run_name=run_name, experiment_id=experiment_ids[0])
+            run = mf.start_run(run_name=run_name, experiment_id=experiment_ids[0],
+                              nested=nested)
             mf.end_run()
             return run.info.run_id
     return None
