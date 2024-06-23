@@ -1,3 +1,4 @@
 model_name: tiiuae/falcon-7b
 MLFLOW_TRACKING_URI: "sqlite:///mlflow.db"
 MLFLOW_EXPERIMENT_NAME: "senetiment_analysis"
+MLFLOW_MODEL_NAME: "FalconSentiAnalysis"
