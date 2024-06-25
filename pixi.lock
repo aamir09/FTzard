@@ -1933,7 +1933,7 @@ packages:
   name: ftzard
   version: 1.0.0
   path: .
-  sha256: 1678dd72bdfe3311f6ae2044e2a003b2c5915debe4a1218b3b71ac80d5b39857
+  sha256: 5fc4ff181e2a547d9c52aa1f17ed14f7a735d47de2330f1e2ada6a8daf97ad5d
   requires_python: '>=3.8'
   editable: true
 - kind: pypi

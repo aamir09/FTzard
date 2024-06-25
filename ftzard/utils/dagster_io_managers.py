@@ -78,7 +78,7 @@ class PandasCSVIOManager(UPathIOManager):
             return UPath(f"{context.resource_config['base_path']}/{context.name}{type(self).extension}")
 
     def dump_to_path(self, context: OutputContext, obj: pd.DataFrame, path: UPath):
-        context.log.info(context.asset_key)
+        # context.log.info(context.asset_key)
         with path.open("wb") as file:
             obj.to_csv(file)
 
