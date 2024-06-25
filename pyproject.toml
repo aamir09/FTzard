@@ -39,6 +39,7 @@ dvc-gdrive = "*"
 jupyterlab = "*" 
 optuna = "*"
 joblib = "*"
+dagster-webserver = "*"
 
 [tool.pixi.tasks]
 local_jupyter = "jupyter lab --port 8081 --ip 0.0.0.0 --allow-root"
@@ -46,3 +47,6 @@ mlflow_ui = "mlflow ui --backend-store-uri sqlite:///ftzard/pipeline/notebooks/m
 
 [tool.pixi.system-requirements]
 linux = "5.8"
+
+[tool.dagster]
+module_name = "ftzard"
