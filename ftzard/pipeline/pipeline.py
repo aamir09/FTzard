@@ -1,4 +1,4 @@
-from dagstermill import define_dagstermill_asset, define_dagstermill_op
+from dagstermill import define_dagstermill_op
 from dagstermill import local_output_notebook_io_manager
 from dagster import (file_relative_path, 
                      In, 
