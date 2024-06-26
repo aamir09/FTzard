@@ -166,3 +166,4 @@ artifacts/
 mlruns/
 mlflow.db
 config_link
+ftzard/pipeline/notebooks/mlflow.db
