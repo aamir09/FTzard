@@ -44,7 +44,7 @@ dagster-webserver = "*"
 [tool.pixi.tasks]
 local_jupyter = "jupyter lab --port 8081 --ip 0.0.0.0 --allow-root"
 mlflow_ui = "mlflow ui --backend-store-uri sqlite:///ftzard/pipeline/notebooks/mlflow.db --host 0.0.0.0"
-dagster_ui = "dagster dev --port 8081 --host 0.0.0.0"
+dagster_ui = "dagster dev --port 5000 --host 0.0.0.0"
 
 [tool.pixi.system-requirements]
 linux = "5.8"
