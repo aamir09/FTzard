@@ -62,7 +62,34 @@ data_preprocessor_job = data_preprocessor_graph.to_job(
 
 ### END DATA PREPROCESSING ###
 
+### HYPERPARAM_TUNING & TRAINING ###
+
+
+hp_trainer_op = define_dagstermill_op(
+    name="hp_trainer_op",
+    notebook_path=file_relative_path(__file__, "notebooks/Step3_HyperParam_Tuning.ipynb"),
+    output_notebook_name="output_hp_training",
+    # outs={"tokenized_dataset": Out(dict, io_manager_key="io_manager_td")},
+    ins={"datasets": In(dict, input_manager_key="io_manager_ds")}
+)
+
+@graph
+def hp_trainer_graph():
+    _ = hp_trainer_op()
+    return
+
+hp_trainer_job = hp_trainer_graph.to_job(
+    name="hp_trainer_job",
+    resource_defs={
+        "output_notebook_io_manager": local_output_notebook_io_manager,
+        "io_manager_ds": joblib_io_manager
+    }
+)
+
+### END HYPERPARAM_TUNING & TRAINING ###
+
 
 
 all_jobs = [data_cleaner_job,
-            data_preprocessor_job]
+            data_preprocessor_job,
+            hp_trainer_job]
