@@ -10,6 +10,30 @@ from ftzard.utils.dagster_io_managers import (
                             pandas_csv_io_manager
 )
 
+### GIT DVC ###
+
+dvc_logger_op = define_dagstermill_op(
+    name="dvc_logger_op",
+    notebook_path=file_relative_path(__file__, "notebooks/Git_Dvc.ipynb"),
+    output_notebook_name="output_dvc_logging",
+    ins={"metadata": In(dict, input_manager_key="io_manager_metadata")}
+)
+
+@graph
+def dvc_logger_graph():
+    _ = dvc_logger_op()
+    return
+
+dvc_logger_job = dvc_logger_graph.to_job(
+    name="dvc_logger_job",
+    resource_defs={
+        "output_notebook_io_manager": local_output_notebook_io_manager,
+        "io_manager_metadata": joblib_io_manager
+    }
+)
+
+### END GIT DVC ###
+
 ## CREATING DATA CLEANING JOB ####
 
 data_cleaner_op = define_dagstermill_op(
@@ -24,6 +48,7 @@ data_cleaner_op = define_dagstermill_op(
 @graph
 def data_cleaner_graph():
     cleaned_data, metadata, _ = data_cleaner_op()
+    dvc_logger_op(metadata=metadata)
     return cleaned_data, metadata
 
 data_cleaner_job = data_cleaner_graph.to_job(
@@ -33,6 +58,7 @@ data_cleaner_job = data_cleaner_graph.to_job(
         "io_manager_cd": pandas_csv_io_manager ,
         "io_manager_step1_metadata": joblib_io_manager,
         "raw_data_input_manager": pandas_csv_io_manager,
+         "io_manager_metadata": joblib_io_manager
     }
 )
 
@@ -51,6 +77,7 @@ data_preprocessor_op = define_dagstermill_op(
 @graph
 def data_preprocessor_graph():
     tokenized_data, _ = data_preprocessor_op()
+    # _, = dvc_logger_op()
     return tokenized_data
 
 data_preprocessor_job = data_preprocessor_graph.to_job(
@@ -59,6 +86,7 @@ data_preprocessor_job = data_preprocessor_graph.to_job(
         "output_notebook_io_manager": local_output_notebook_io_manager,
         "io_manager_cd": pandas_csv_io_manager ,
         "io_manager_td": joblib_io_manager,
+        #  "io_manager_metadata": joblib_io_manager
     }
 )
 
@@ -90,29 +118,11 @@ hp_trainer_job = hp_trainer_graph.to_job(
 
 ### END HYPERPARAM_TUNING & TRAINING ###
 
-### GIT DVC ###
 
-dvc_logger_op = define_dagstermill_op(
-    name="dvc_logger_op",
-    notebook_path=file_relative_path(__file__, "notebooks/Git_Dvc.ipynb"),
-    output_notebook_name="output_dvc_logging",
-    ins={"metadata": In(dict, input_manager_key="io_manager_metadata")}
-)
 
-@graph
-def dvc_logger_graph():
-    _ = dvc_logger_op()
-    return
 
-dvc_logger_job = dvc_logger_graph.to_job(
-    name="dvc_logger_job",
-    resource_defs={
-        "output_notebook_io_manager": local_output_notebook_io_manager,
-        "io_manager_metadata": joblib_io_manager
-    }
-)
+### DATA JOBS ### 
 
-### END GIT DVC ###
 
 
 
@@ -120,3 +130,5 @@ all_jobs = [data_cleaner_job,
             data_preprocessor_job,
             hp_trainer_job,
             dvc_logger_job]
+
+
