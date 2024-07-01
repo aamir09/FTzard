@@ -10,11 +10,11 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def get_current_date_time():
-    now = datetime.datetime.now().date()
+    now = datetime.datetime.now()
     date = str(now.date())
     hour = str(now.hour)
     minute = str(now.minute)
-    return "_".join([date, hour, minute])
+    return "_".join([date, f"{hour}:{minute}"])
     
 
 def run_command(command):
