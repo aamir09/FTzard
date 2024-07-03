@@ -1,9 +1,14 @@
+import os
+from ftzard.utils.common import hash_file
 from dagstermill import define_dagstermill_op
 from dagstermill import local_output_notebook_io_manager
 from dagster import (file_relative_path, 
                      In, 
                      Out,
-                     graph)
+                     graph,
+                     sensor, 
+                     RunRequest, 
+                     RunConfig)
 from pandas import DataFrame
 from ftzard.utils.dagster_io_managers import (
                             joblib_io_manager,
@@ -285,34 +290,47 @@ cleaner_processor_inferencer_job = cleaner_processor_inferencer_graph.to_job(
 ######################################
 
 ##### SENSORS ####
-# MONITORED_FOLDER_INFERENCE = "../data/incoming/inference"
-# @sensor(job=)
-# def new_data_sensor(context):
-#     last_mtime = float(context.cursor) if context.cursor else 0
-#     max_mtime = last_mtime
-#     for filename in os.listdir(MONITORED_FOLDER_INFERENCE):
-#         #filename = NEW_DATA
-#         fileroot = filename.split('.')[0] # split bla.csv
-#         filepath = os.path.join(MONITORED_FOLDER_INFERENCE, filename)
-#         if os.path.isfile(filepath):
-#             fstats = os.stat(filepath)
-#             file_mtime = fstats.st_mtime
-#             if file_mtime >= last_mtime:
-#                 yield RunRequest(
-#                     run_key=f"{filename}:{str(file_mtime)}",
-#                     run_config={
-#                         'ops': {'transformer_op': {'config': {'datatype': 'dataset'}}},
-#                                 'resources': {
-#                                     'lake_io_manager': {'config': {'base_path': 'warehouse',
-#                                                 'file_name': f"featurestore_{fileroot}.parquet"}},
-#                                     'model_input_manager': {'config': {'base_path': 'warehouse',
-#                                                     'file_name': 'encoders.joblib'}},
-#                                     'raw_data_input_manager': {'config': {'base_path': 'incoming/inference',
-#                                                         'file_name': filename}}}
-#                     },
-#                 )
-#             max_mtime = max(max_mtime, file_mtime)
-#     context.update_cursor(str(max_mtime))
+MONITORED_FOLDER_INFERENCE = "/app/ftzard/data/incoming/"
+@sensor(job=cleaner_processor_inferencer_job)
+def inference_data_sensor(context):
+    ### Cursor will be a dictionary saving the last modified time and 
+    ### the file hash, we will only yield a run if last modeified time is
+    ### greater than the previous recorded one and when contents of file has 
+    ### changed; the hash value has changed.
+    last_cursor = eval(context.cursor) if context.cursor else {}
+    last_mtime = float(last_cursor["time"]) if  last_cursor.get("time") else 0
+    old_hash_value = last_cursor.get("hash", "") 
+    max_mtime = last_mtime
+    for filename in os.listdir(MONITORED_FOLDER_INFERENCE):
+        #filename = NEW_DATA
+        fileroot = filename.split('.')[0] # split bla.csv
+        filepath = os.path.join(MONITORED_FOLDER_INFERENCE, filename)
+        if os.path.isfile(filepath):
+            new_hash_value = hash_file(filepath)
+            fstats = os.stat(filepath)
+            file_mtime = fstats.st_mtime
+            if file_mtime >= last_mtime and old_hash_value!=new_hash_value:
+                yield RunRequest(
+                    run_key=f"{filename}:{str(file_mtime)}",
+                    run_config={'resources': {'io_manager_ds': {'config': {'base_path': '/app/ftzard/data',
+                                            'file_name': 'inference_data.joblib'}},
+               'io_manager_metadata': {'config': {'base_path': '/app/ftzard/data',
+                                                  'file_name': 'step5_run_metadata.joblib'}},
+               'io_manager_pl': {'config': {'base_path': '/app/ftzard/data',
+                                            'file_name': 'predictions_logits.joblib'}},
+               'io_manager_step2_1_metadata': {'config': {'base_path': '/app/ftzard/data',
+                                                          'file_name': 'step2_1_metadata.joblib'}},
+               'io_manager_step5_metadata': {'config': {'base_path': '/app/ftzard/data',
+                                                        'file_name': 'step5_run_metadata.joblib'}},
+               'io_manager_td': {'config': {'base_path': '/app/ftzard/data',
+                                            'file_name': 'inference_data.joblib'}},
+               'output_notebook_io_manager': {'config': {'asset_key_prefix': []}},
+               'raw_data_input_manager': {'config': {'base_path': '/app/ftzard/data/incoming',
+                                                     'file_name': filename}}}}
+                )
+            max_mtime = max(max_mtime, file_mtime)
+            new_cursor = {"time": max_mtime, "hash": new_hash_value}
+    context.update_cursor(str(new_cursor))
 
 ##################
 
@@ -324,6 +342,10 @@ all_jobs = [data_cleaner_job,
             model_logger_job,
             sampling_job,
             retrainer_job, 
-            inference_data_preprocessor_job,]
+            inference_data_preprocessor_job,
+            cleaner_processor_inferencer_job]
+
+
+all_sensors = [inference_data_sensor]
 
 
