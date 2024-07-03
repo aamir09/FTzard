@@ -229,6 +229,93 @@ retrainer_job = retrainer_graph.to_job(
 
 ### END RETRAINING JOB ###
 
+### INFERENCE PREPROCESSOR JOB ###
+inference_data_preprocessor_op = define_dagstermill_op(
+    name="inference_data_preprocessor_op",
+    notebook_path=file_relative_path(__file__, "notebooks/Step2.1_Inference_Preprocessing.ipynb"),
+    output_notebook_name="output_inference_preprocessing",
+    outs={"tokenized_dataset": Out(dict, io_manager_key="io_manager_td"),
+          "step2_1_run_metadata": Out(dict, io_manager_key="io_manager_step2_1_metadata")},
+    ins={"data": In(DataFrame, input_manager_key="raw_data_input_manager")}
+)
+
+@graph
+def inference_data_preprocessor_graph():
+    tokenized_data, metadata, _ = inference_data_preprocessor_op()
+    dvc_logger_op(metadata=metadata)
+    return tokenized_data, metadata
+
+inference_data_preprocessor_job = inference_data_preprocessor_graph.to_job(
+    name="inference_data_preprocessor_job",
+    resource_defs={
+        "output_notebook_io_manager": local_output_notebook_io_manager,
+        "raw_data_input_manager": pandas_csv_io_manager ,
+        "io_manager_td": joblib_io_manager,
+        "io_manager_metadata": joblib_io_manager,
+        "io_manager_step2_1_metadata": joblib_io_manager
+    }
+)
+
+
+### END INFERENCE PREPROCESSOR JOB ###
+
+#### CLEAN -> PROCESS -> INFERENCE ####
+@graph
+def cleaner_processor_inferencer_graph():
+    processed_data, metadata, _ = inference_data_preprocessor_op()
+    p_l, metadata, _ = data_inference_op(datasets=processed_data)
+    dvc_logger_op(metadata=metadata)
+    return p_l
+
+cleaner_processor_inferencer_job = cleaner_processor_inferencer_graph.to_job(
+    name="cleaner_processor_inferencer_job",
+    resource_defs={
+        "output_notebook_io_manager": local_output_notebook_io_manager,
+        "raw_data_input_manager": pandas_csv_io_manager ,
+        "io_manager_td": joblib_io_manager,
+        "io_manager_metadata": joblib_io_manager,
+        "io_manager_step2_1_metadata": joblib_io_manager,
+        "io_manager_ds": joblib_io_manager ,
+        "io_manager_step5_metadata": joblib_io_manager,
+        "io_manager_pl": joblib_io_manager,
+
+    }
+)
+
+######################################
+
+##### SENSORS ####
+# MONITORED_FOLDER_INFERENCE = "../data/incoming/inference"
+# @sensor(job=)
+# def new_data_sensor(context):
+#     last_mtime = float(context.cursor) if context.cursor else 0
+#     max_mtime = last_mtime
+#     for filename in os.listdir(MONITORED_FOLDER_INFERENCE):
+#         #filename = NEW_DATA
+#         fileroot = filename.split('.')[0] # split bla.csv
+#         filepath = os.path.join(MONITORED_FOLDER_INFERENCE, filename)
+#         if os.path.isfile(filepath):
+#             fstats = os.stat(filepath)
+#             file_mtime = fstats.st_mtime
+#             if file_mtime >= last_mtime:
+#                 yield RunRequest(
+#                     run_key=f"{filename}:{str(file_mtime)}",
+#                     run_config={
+#                         'ops': {'transformer_op': {'config': {'datatype': 'dataset'}}},
+#                                 'resources': {
+#                                     'lake_io_manager': {'config': {'base_path': 'warehouse',
+#                                                 'file_name': f"featurestore_{fileroot}.parquet"}},
+#                                     'model_input_manager': {'config': {'base_path': 'warehouse',
+#                                                     'file_name': 'encoders.joblib'}},
+#                                     'raw_data_input_manager': {'config': {'base_path': 'incoming/inference',
+#                                                         'file_name': filename}}}
+#                     },
+#                 )
+#             max_mtime = max(max_mtime, file_mtime)
+#     context.update_cursor(str(max_mtime))
+
+##################
+
 all_jobs = [data_cleaner_job,
             data_preprocessor_job,
             hp_trainer_job,
@@ -236,6 +323,7 @@ all_jobs = [data_cleaner_job,
             data_inference_job,
             model_logger_job,
             sampling_job,
-            retrainer_job]
+            retrainer_job, 
+            inference_data_preprocessor_job,]
 
 
