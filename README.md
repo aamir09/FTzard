@@ -32,6 +32,8 @@ There's no need to jump between folders and piles of notebooks, simply use FTzar
 
 ## Installation & Setup 
 
+<h4>It is recommended that you first fork the reppository and then clone it to your server as dvc needs to commit & push .dvc files to git for tracking.</h4>
+<br><br>
 <b>1. Environment</b><br>
 The environment is quite easy to setup, all thanks to pixi. The pixi setup is already given in the Dockerfile and it is recommended to use the Dockerfile. 
 a) Build the docker Image (Ensure you have docker installed and docker daemon is running)
@@ -76,13 +78,15 @@ dvc add ftzard/data
 When you'll open the folder `ftzard`, you'll notice a file is created namely `data.dvc` that contains metadata for the data directory, like the hash value, hash algorithm, number of file etc. It is basically the file that will help us track any changes in the data directory as the hash and other meta data will change and git will detect it.
 
 
-c) Define a remote locaation to save data (It can be local, hdfs, s3, azure, etc)
+c) Define a remote locaation to save data (It can be local, hdfs, s3, azure, etc, we saving in local at the moment)
 ```
 dvc add remote -d <name for remote> <location>
 ```
 This will let `dvc` know that it is one of the locations where you want push you data and it's information can be found in `.dvc/config` file. Once there are any changes in the data, you push this new data to this remote storage and we can then commit the new `data.dvc` file to git.
 
 There are a few more steps involved in between however, they are taken care of in the `Git_Dvc.ipynb` notebook. This is all you have to do to setup DVC.
+
+Note: For using any 3rd party storage like aszure, s3, gcloud, you need to install dvc extensions for the same, have these services configured on your server beforehand or follow standard dvc procedure to set such remotes.
 
 
  <b>3. Git</b><br>
@@ -95,36 +99,30 @@ yum install -y git
 
 In the container, to allow git automatically log dvc file changes, we have to re-configure the origin url so that it doesn't keep popping up the questions like Username and Passowrd.
 
+b) Add Git username and password (token) env variables
 
+```
+export GITHUB_USERNAME=your_username
+export GITHUB_PASSWORD=your_git_token
 
+```
 
+c) Modify the url of origin of the repository to, 
+```
+git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/${GITHUB_USERNAME}:/ftzard.git
 
+```
+Note: I am assuming that you have `forked` the repository before cloning it. 
 
+ <b>4. Dagster</b><br>
+Dagster is an open-source data orchestrator that helps manage and automate complex data pipelines. It enables robust workflow management, seamless integration with various data tools, and efficient handling of dependencies, making it ideal for building and maintaining data-intensive applications. 
 
+The only thing to do here is to set the `DAGSTER_HOME` environment variable, which is essential for configuring Dagster's storage location for its metadata, such as pipeline runs, logs, and other important information. This ensures that all operational data is stored consistently in a specified directory, facilitating easier management and debugging. If this is not specified, then each time you run Dagster server, it will create a new `tmp` folder to store the above.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
+export DAGSTER_HOME=/path/to/your/dagster/home
+```
+To make sure the changes take effet, restart the terminal or refersh the bashrc using, 
+```
+source ~/.bashrc
+```
