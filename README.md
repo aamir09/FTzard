@@ -1,4 +1,8 @@
 # FTzard
+<div align="center">
+<img alt="Static Badge" src="https://img.shields.io/badge/General%20Public%20License%20v3.0-black?style=plastic&label=License&labelColor=black&color=blue&cacheSeconds=https%3A%2F%2Fwww.gnu.org%2Flicenses%2Fquick-guide-gplv3.html&link=https%3A%2F%2Fwww.gnu.org%2Flicenses%2Fquick-guide-gplv3.html">
+
+</div>
 ![License](https://img.shields.io/badge/General%20Public%20License%20v3.0-black?style=plastic&label=License&labelColor=black&color=blue&cacheSeconds=https%3A%2F%2Fwww.gnu.org%2Flicenses%2Fquick-guide-gplv3.html&link=https%3A%2F%2Fwww.gnu.org%2Flicenses%2Fquick-guide-gplv3.html)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
 [![MLflow](https://img.shields.io/badge/MLflow-2.13.x-blue)](https://mlflow.org/)
