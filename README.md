@@ -109,7 +109,7 @@ export GITHUB_PASSWORD=your_git_token
 
 c) Modify the url of origin of the repository to, 
 ```
-git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/${GITHUB_USERNAME}:/ftzard.git
+git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/${GITHUB_USERNAME}/ftzard.git
 
 ```
 Note: I am assuming that you have `forked` the repository before cloning it. 
