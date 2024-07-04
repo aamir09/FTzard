@@ -37,8 +37,9 @@ There's no need to jump between folders and piles of notebooks, simply use FTzar
 <b>1. Environment</b><br>
 The environment is quite easy to setup, all thanks to pixi. The pixi setup is already given in the Dockerfile and it is recommended to use the Dockerfile. 
 a) Build the docker Image (Ensure you have docker installed and docker daemon is running)
+
 ```
-docker build -t ftzard_image .    
+docker build -t ftzard_image .  
 ```
 Note: Make sure you are in the directory where the `Dockerfile` resides; the project directory.
 
