@@ -1,3 +1,4 @@
+# Pipeline
 It is the core of the project, dedicated to an end-to-end continual learning pipeline for large language models (LLMs). This pipeline is designed to streamline and automate the training and evaluation process for LLMs. Here, we have successfully trained Falcon 7B on a Sentiment Analysis task, demonstrating the pipeline's capabilities. The organized structure ensures efficient tracking of experiments, data, and models. Dive in to explore and extend this robust setup for your own LLM projects.
 
 A generic data piepline has two components to it:<br><br>
