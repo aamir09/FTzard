@@ -30,6 +30,12 @@ To address these challenges, I created FTzard, a comprehensive framework designe
 There's no need to jump between folders and piles of notebooks, simply use FTzard's structure for all your projects and remain organised. To get started, simply modify the code in the provided Jupyter notebooks, and your pipeline will be ready to go. 
 </p>
 
+
+| SubModule | Doc Link|
+|--------------|-------------|
+| Pipeline      | [Link](https://github.com/aamir09/FTzard/blob/main/ftzard/pipeline/Pipeline.md) |
+
+
 ## Installation & Setup 
 
 <h4>It is recommended that you first fork the reppository and then clone it to your server as dvc needs to commit & push .dvc files to git for tracking.</h4>
