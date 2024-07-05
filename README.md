@@ -28,6 +28,11 @@ The advent of large language models (LLMs) has revolutionized the field of langu
 To address these challenges, I created FTzard, a comprehensive framework designed to assist data scientists in managing their LLM experiments. FTzard offers an end-to-end continual learning pipeline, integrating orchestration with Dagster, experiment and model tracking with MLflow, and data versioning with DVC. This framework not only streamlines the development lifecycle but also accelerates progress by ensuring organization and reducing hassle. In addition to that, it allows you the flexibility of having a reproducible environment using <b>pixi</b> (superfast alternative to tools like poetry) with an inplace config structure harvested using <b>hydra</b>. 
 
 There's no need to jump between folders and piles of notebooks, simply use FTzard's structure for all your projects and remain organised. To get started, simply modify the code in the provided Jupyter notebooks, and your pipeline will be ready to go. 
+
+
+**[UPDATE]** [05/07/2024] I have removed all dvc related files, so that you can start fresh. However, I have kept `/ftzard/pipeline/notebooks/mlflow.db` so that when you'll run mlflow ui using the pixi task defined in pyprojet.toml, you can see the structure I am referring to in the file. For a new project, delete the db and create a file with the same or any other name ending with `.db`
+<br>
+
 </p>
 
 
