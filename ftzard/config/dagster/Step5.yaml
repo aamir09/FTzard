@@ -1,0 +1,20 @@
+resources:
+  io_manager_ds:
+    config:
+      base_path: /app/ftzard/data
+      file_name: tokenized_data.joblib
+  io_manager_metadata:
+    config:
+      base_path: /app/ftzard/data
+      file_name: step5_run_metadata.joblib
+  io_manager_pl:
+    config:
+      base_path: /app/ftzard/data
+      file_name: preidictions_logits.joblib
+  io_manager_step5_metadata:
+    config:
+      base_path: /app/ftzard/data
+      file_name: step5_run_metadata.joblib
+  output_notebook_io_manager:
+    config:
+      asset_key_prefix: []

@@ -1,0 +1,25 @@
+resources:
+  output_notebook_io_manager:
+    config:
+      asset_key_prefix: []
+      
+  io_manager_cd:
+    config:
+      base_path: /app/ftzard/data
+      file_name: cleaned_data.csv
+      
+  io_manager_step1_metadata:
+    config:
+      base_path: /app/ftzard/data
+      file_name: step1_run_metadata.joblib
+      
+  raw_data_input_manager:
+    config:
+      base_path: /app/ftzard/data
+      file_name: training.csv
+      
+  io_manager_metadata:
+    config:
+      base_path: /app/ftzard/data
+      file_name: step1_run_metadata.joblib
+      

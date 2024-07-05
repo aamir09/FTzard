@@ -1,0 +1,9 @@
+resources:
+  output_notebook_io_manager:
+    config:
+      asset_key_prefix: []
+      
+  io_manager_ds:
+    config:
+      base_path: /app/ftzard/data
+      file_name: tokenized_data.joblib

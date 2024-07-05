@@ -1,0 +1,20 @@
+resources:
+  io_manager_metadata:
+    config:
+      base_path: /app/ftzard/data
+      file_name: step2_1_metadata.joblib
+  io_manager_step2_1_metadata:
+    config:
+      base_path: /app/ftzard/data
+      file_name: step2_1_metadata.joblib
+  io_manager_td:
+    config:
+      base_path: /app/ftzard/data
+      file_name: inference_data.joblib
+  output_notebook_io_manager:
+    config:
+      asset_key_prefix: []
+  raw_data_input_manager:
+    config:
+      base_path: /app/ftzard/data/incoming
+      file_name: new_data.csv

@@ -1,0 +1,20 @@
+resources:
+  io_manager_metadata:
+    config:
+      base_path: /app/ftzard/data
+      file_name: step6_run_metadata.joblib
+  io_manager_pd:
+    config:
+      base_path: /app/ftzard/data
+      file_name: preidictions_logits.joblib
+  io_manager_rd:
+    config:
+      base_path: /app/ftzard/data
+      file_name: retraining_data.joblib
+  io_manager_step6_metadata:
+    config:
+      base_path: /app/ftzard/data
+      file_name: step6_run_metadata.joblib
+  output_notebook_io_manager:
+    config:
+      asset_key_prefix: []
