@@ -150,6 +150,8 @@ For the sentiment analysis graph the DAG looks like this:
 <img width="989" alt="image" src="https://github.com/aamir09/FTzard/assets/62461730/a8972306-0f86-4cbb-8a55-190a20c04ba0">
 <br>
 
+**Note: We are generating test data while the data preprocessing step and hence the Step4 proceeds with Step5.**
+
 Each step in the pipeline has two variants, 1) Produces Data Artifacts 2) No Data Artifacts. The former is the case in Step 1, 2, 2.1, 5 and 6. The latter case is displayed in Step 3, 4 and 7. The notebooks of the first case yields some data artifacts and they are tracked by dvc using git, hence an extra step is follows them 
 which handles the dvc part. This notebook is named as `Git_Dvc.ipynb`. Apart from data these runs also yield mlflow run metadata including `run_name`, `base_run_name` and their corresponding `run_ids`. In addition to that,
 every notebook has mlflow logging and tracking service according the needs of the notebook. 
@@ -175,8 +177,52 @@ This can be easily viewed by running the `mlflow ui`. I have made this easier by
 pixi run mlflow_ui
 ```
 
+
 ### Running a Dagster Job 
 
 Dagster provides multiple ways of executing a job; from the command line, using a sensor and from the Launchpad in the Dagster UI. I would say that while development Launchpad is your best friend as writing the config yaml is easier and it persists the config, so that when you launch a run again, you wouldn't have to write the config again. After, that you can leave this work for the sensor. 
 
+To start the dagster server, there's another pixi task that I have defined that you can use,
+```
+pixi run dagster_ui
+```
+Also, one noticeable thing is that dagster will always accept paths from the `root directory` of your project; `app`. Here is a sample of how to write a config in Dagster Launchpad, this is for the `DATA_CLEANING` JOB:
+<img width="1312" alt="image" src="https://github.com/aamir09/FTzard/assets/62461730/f8fab0d8-d75d-40c8-9fc9-0e36f4218814">
+<br>
+The whole config for this job is given below. Also, I'll add the configs for the rest of the jobs in `ftzard/config/dagster`, which can be used as a reference.
+```
+resources:
+  output_notebook_io_manager:
+    config:
+      asset_key_prefix: []
+      
+  io_manager_cd:
+    config:
+      base_path: /app/ftzard/data
+      file_name: cleaned_data.csv
+      
+  io_manager_step1_metadata:
+    config:
+      base_path: /app/ftzard/data
+      file_name: step1_run_metadata.joblib
+      
+  raw_data_input_manager:
+    config:
+      base_path: /app/ftzard/data
+      file_name: training.csv
+      
+  io_manager_metadata:
+    config:
+      base_path: /app/ftzard/data
+      file_name: step1_run_metadata.joblib
+      
 
+```
+In production, we can configure sensors that would get triggred based on the criteria defined and these jobs will be executed by those sensors.
+
+## Config
+
+The `config` folder under `ftzard` stores the global configurations of the project but it can be designed according to the needs for your project. I have used `hydra` to manage my configurations. It might seem to be redundant at the momemnt but as the project scope increases the importance of `hydra` and the configs increases. It handles complexity with ease and is a handy tool to have in your arsenal.  
+
+
+***
