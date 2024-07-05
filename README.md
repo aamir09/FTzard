@@ -134,10 +134,10 @@ To make sure the changes take effet, restart the terminal or refersh the bashrc 
 source ~/.bashrc
 ```
 
-# Pipeline
+## Pipeline
 It is the core of the project, dedicated to an end-to-end continual learning pipeline for large language models (LLMs). This pipeline is designed to streamline and automate the training and evaluation process for LLMs. Here, we have successfully trained Falcon 7B on a Sentiment Analysis task, demonstrating the pipeline's capabilities. The organized structure ensures efficient tracking of experiments, data, and models. Dive in to explore and extend this robust setup for your own LLM projects.
 
-A generic data piepline has two components to it:<br><br>
+A generic data pipeline has two components to it:<br><br>
 <b>1. Directed Acyclic Graph(DAG)</b>: It is crucial in a pipeline as it defines the sequence and dependencies of tasks, ensuring each step is executed in the correct order. This structure helps manage complex workflows, enhances reliability, and simplifies debugging and maintenance.
 <br><br>
 <b>2. Orchestrator</b>: It automates the execution, scheduling, and coordination of tasks, ensuring efficient and reliable workflow management. It handles dependencies, monitors progress, and manages failures to streamline complex data processes.
@@ -169,3 +169,14 @@ For instance, for the experiment `sentiment_analysis`, I have some top level run
 Now everytime you run a notebook using dagster or just jupyter ID, a new run will be registered under corresponding top level run and as it can be seen the names are in the format `<data>-<time>`
 
 ![image](https://github.com/aamir09/FTzard/assets/62461730/a194c83d-b273-4105-a598-db6dc4392b0f)
+
+This can be easily viewed by running the `mlflow ui`. I have made this easier by making a pixi task named `mlflow_ui` in the `pyproject.toml` file. The UI runs at port 5000 by default by executing the following,
+```
+pixi run mlflow_ui
+```
+
+### Running a Dagster Job 
+
+Dagster provides multiple ways of executing a job; from the command line, using a sensor and from the Launchpad in the Dagster UI. I would say that while development Launchpad is your best friend as writing the config yaml is easier and it persists the config, so that when you launch a run again, you wouldn't have to write the config again. After, that you can leave this work for the sensor. 
+
+
