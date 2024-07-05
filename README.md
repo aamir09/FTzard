@@ -225,6 +225,6 @@ In production, we can configure sensors that would get triggred based on the cri
 The `config` folder under `ftzard` stores the global configurations of the project but it can be designed according to the needs for your project. I have used `hydra` to manage my configurations. It might seem to be redundant at the momemnt but as the project scope increases the importance of `hydra` and the configs increases. It handles complexity with ease and is a handy tool to have in your arsenal.  
 
 ## References 
-1. ![mlops2_with_dagster, Dr Rahul Dave](https://github.com/univai-community/mlops2_with_dagster)
-2. ![Fine-tuning LLAMA 3, Trade Mamba](https://github.com/adidror005/youtube-videos/blob/main/LLAMA_3_Fine_Tuning_for_Sequence_Classification_Actual_Video.ipynb)
+1. [mlops2_with_dagster, Dr Rahul Dave](https://github.com/univai-community/mlops2_with_dagster)
+2. [Fine-tuning LLAMA 3, Trade Mamba](https://github.com/adidror005/youtube-videos/blob/main/LLAMA_3_Fine_Tuning_for_Sequence_Classification_Actual_Video.ipynb)
 ***
