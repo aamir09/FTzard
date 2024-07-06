@@ -141,9 +141,7 @@ Note: I am assuming that you have `forked` the repository before cloning it.
 ### 4. Dagster 
 
 <br>
-Dagster is an open-source data orchestrator that helps manage and automate complex data pipelines.
-
-The only thing to do here is to set the `DAGSTER_HOME` environment variable, which is essential for configuring Dagster's storage location for its metadata, such as pipeline runs, logs, and other important information. This ensures that all operational data is stored consistently in a specified directory, facilitating easier management and debugging. If this is not specified, then each time you run Dagster server, it will create a new `tmp` folder to store the above.
+Dagster is an open-source data orchestrator that helps manage and automate complex data pipelines. The only thing to do here is to set the `DAGSTER_HOME` environment variable, which is essential for configuring Dagster's storage location for its metadata, such as pipeline runs, logs, and other important information. This ensures that all operational data is stored consistently in a specified directory, facilitating easier management and debugging. If this is not specified, then each time you run Dagster server, it will create a new `tmp` folder to store the above.
 
 ```
 export DAGSTER_HOME=/path/to/your/dagster/home
