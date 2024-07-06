@@ -32,6 +32,9 @@ There's no need to jump between folders and piles of notebooks—simply use FTza
 
 **[UPDATE]** [05/07/2024] I have removed all dvc related files, so that you can start fresh. However, I have kept `/ftzard/pipeline/notebooks/mlflow.db` so that when you'll run mlflow ui using the pixi task defined in pyprojet.toml, you can see the structure I am referring to in the file. For a new project, delete the db and create a file with the same or any other name ending with `.db`
 <br>
+
+
+**[UPDATE]** [06/07/2024] [Raw Training Data: training.csv, download link](https://mega.nz/file/8RgWTD6R#YZ1BIzjkRtwogHVISddPXShA7D_PbDr48q3URUgVm2Q)
 </p>
 
 
