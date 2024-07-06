@@ -17,7 +17,11 @@
 
 <p align="justify">
   
-The advent of large language models (LLMs) has revolutionized the field of language modeling, giving rise to a multitude of use cases and applications. With a wide variety of LLMs now available, evaluating them for specific tasks has become a challenging endeavor. Additionally, as experiments grow in complexity, tracking results, data, and fine-tuned models becomes increasingly difficult for data scientists.
+The advent of large language models (LLMs) has revolutionized the field of language modeling, giving rise to a multitude of use cases and applications. Evaluating these models for specific tasks can be challenging, and as experiments grow in complexity, tracking results, data, and fine-tuned models becomes increasingly difficult for data scientists.
+
+To address these challenges, I created FTzard, a comprehensive framework designed to assist data scientists in managing their LLM experiments. FTzard offers an end-to-end continual learning pipeline, integrating orchestration with Dagster, experiment and model tracking with MLflow, assurnig environment reproducibility with Pixi, and data versioning with DVC. This framework streamlines the development lifecycle, accelerates progress by ensuring organization, and reduces hassle.
+
+There's no need to jump between folders and piles of notebooks—simply use FTzard's structure for all your projects and stay organized.
 
 <br>
 <div align="center">
@@ -25,15 +29,20 @@ The advent of large language models (LLMs) has revolutionized the field of langu
 </div>
 <br>
 
-To address these challenges, I created FTzard, a comprehensive framework designed to assist data scientists in managing their LLM experiments. FTzard offers an end-to-end continual learning pipeline, integrating orchestration with Dagster, experiment and model tracking with MLflow, and data versioning with DVC. This framework not only streamlines the development lifecycle but also accelerates progress by ensuring organization and reducing hassle. In addition to that, it allows you the flexibility of having a reproducible environment using <b>pixi</b> (superfast alternative to tools like poetry) with an inplace config structure harvested using <b>hydra</b>. 
-
-There's no need to jump between folders and piles of notebooks, simply use FTzard's structure for all your projects and remain organised. To get started, simply modify the code in the provided Jupyter notebooks, and your pipeline will be ready to go. 
-
 
 **[UPDATE]** [05/07/2024] I have removed all dvc related files, so that you can start fresh. However, I have kept `/ftzard/pipeline/notebooks/mlflow.db` so that when you'll run mlflow ui using the pixi task defined in pyprojet.toml, you can see the structure I am referring to in the file. For a new project, delete the db and create a file with the same or any other name ending with `.db`
 <br>
-
 </p>
+
+
+## Key Features
+
+- **End-to-End Continual Learning Pipeline:** Integrates Dagster, MLflow, and DVC for a seamless workflow.
+- **Reproducible Environment:** Uses Pixi for environment management and Hydra for configuration management.
+- **Simplified Project Structure:** Reduces the complexity of managing multiple notebooks and folders.
+- **Enhanced Organization:** Tracks experiments, data, and models efficiently.
+
+---
 
 
 | SubModule | Doc Link|
@@ -132,7 +141,7 @@ Note: I am assuming that you have `forked` the repository before cloning it.
 ### 4. Dagster 
 
 <br>
-Dagster is an open-source data orchestrator that helps manage and automate complex data pipelines. It enables robust workflow management, seamless integration with various data tools, and efficient handling of dependencies, making it ideal for building and maintaining data-intensive applications. 
+Dagster is an open-source data orchestrator that helps manage and automate complex data pipelines.
 
 The only thing to do here is to set the `DAGSTER_HOME` environment variable, which is essential for configuring Dagster's storage location for its metadata, such as pipeline runs, logs, and other important information. This ensures that all operational data is stored consistently in a specified directory, facilitating easier management and debugging. If this is not specified, then each time you run Dagster server, it will create a new `tmp` folder to store the above.
 
@@ -145,7 +154,7 @@ source ~/.bashrc
 ```
 
 ## Pipeline
-It is the core of the project, dedicated to an end-to-end continual learning pipeline for large language models (LLMs). This pipeline is designed to streamline and automate the training and evaluation process for LLMs. Here, we have successfully trained Falcon 7B on a Sentiment Analysis task, demonstrating the pipeline's capabilities. The organized structure ensures efficient tracking of experiments, data, and models. Dive in to explore and extend this robust setup for your own LLM projects.
+It is the core of the project, dedicated to an end-to-end continual learning pipeline for large language models (LLMs). This pipeline is designed to streamline and automate the training and evaluation process for LLMs. Here, we have successfully trained Falcon 7B on a Sentiment Analysis task, demonstrating the pipeline's capabilities. The organized structure ensures efficient tracking of experiments, data, and models. Dive in, to explore and extend this robust setup for your own LLM projects.
 
 A generic data pipeline has two components to it:<br><br>
 <b>1. Directed Acyclic Graph(DAG)</b>: It is crucial in a pipeline as it defines the sequence and dependencies of tasks, ensuring each step is executed in the correct order. This structure helps manage complex workflows, enhances reliability, and simplifies debugging and maintenance.
