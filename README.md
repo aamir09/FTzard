@@ -64,7 +64,7 @@ docker run --gpus all --rm -it --mount type=bind,source="$(pwd)",target=/app -p 
 We use all the available gpus and mount the project directory so that development becomes easier and you can add data easily. In the container our project directory will be `/app` and hence all the paths are with respect to that in the notebook wherever relative paths couldn't cut it. You can expose more ports to run mflow, dagster and jupyter seperately. 
 
 #### c) Activating the environment
-<br><br>
+<br>
 Pixi is quite similar to `pip-env` in terms of activation of the environment. Once you are inside the docker container, go to the project folder,
 ```
 cd /app
